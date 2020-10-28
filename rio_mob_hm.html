@@ -1,0 +1,553 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    
+      <meta charset="utf-8">
+      <title>rio_mob_hm</title>
+      
+      
+        
+          
+        <style>
+            table.panel-df {
+                    margin-left: auto;
+                    margin-right: auto;
+                    border: none;
+                    border-collapse: collapse;
+                    border-spacing: 0;
+                    color: black;
+                    font-size: 12px;
+                    table-layout: fixed;
+                    width: 100%;
+                }
+
+                .panel-df tr, th, td {
+                    text-align: right;
+                    vertical-align: middle;
+                    padding: 0.5em 0.5em !important;
+                    line-height: normal;
+                    white-space: normal;
+                    max-width: none;
+                    border: none;
+                }
+
+                .panel-df tbody {
+                    display: table-row-group;
+                    vertical-align: middle;
+                    border-color: inherit;
+                }
+
+                .panel-df tbody tr:nth-child(odd) {
+                    background: #f5f5f5;
+                }
+
+                .panel-df thead {
+                    border-bottom: 1px solid black;
+                    vertical-align: bottom;
+                }
+
+                .panel-df tr:hover {
+                    background: lightblue !important;
+                    cursor: pointer;
+                }
+
+        </style>
+        <style>
+            .json-formatter-row {
+                  font-family: monospace;
+                }
+                .json-formatter-row,
+                .json-formatter-row a,
+                .json-formatter-row a:hover {
+                  color: black;
+                  text-decoration: none;
+                }
+                .json-formatter-row .json-formatter-row {
+                  margin-left: 1rem;
+                }
+                .json-formatter-row .json-formatter-children.json-formatter-empty {
+                  opacity: 0.5;
+                  margin-left: 1rem;
+                }
+                .json-formatter-row .json-formatter-children.json-formatter-empty:after {
+                  display: none;
+                }
+                .json-formatter-row .json-formatter-children.json-formatter-empty.json-formatter-object:after {
+                  content: "No properties";
+                }
+                .json-formatter-row .json-formatter-children.json-formatter-empty.json-formatter-array:after {
+                  content: "[]";
+                }
+                .json-formatter-row .json-formatter-string,
+                .json-formatter-row .json-formatter-stringifiable {
+                  color: green;
+                  white-space: pre;
+                  word-wrap: break-word;
+                }
+                .json-formatter-row .json-formatter-number {
+                  color: blue;
+                }
+                .json-formatter-row .json-formatter-boolean {
+                  color: red;
+                }
+                .json-formatter-row .json-formatter-null {
+                  color: #855A00;
+                }
+                .json-formatter-row .json-formatter-undefined {
+                  color: #ca0b69;
+                }
+                .json-formatter-row .json-formatter-function {
+                  color: #FF20ED;
+                }
+                .json-formatter-row .json-formatter-date {
+                  background-color: rgba(0, 0, 0, 0.05);
+                }
+                .json-formatter-row .json-formatter-url {
+                  text-decoration: underline;
+                  color: blue;
+                  cursor: pointer;
+                }
+                .json-formatter-row .json-formatter-bracket {
+                  color: blue;
+                }
+                .json-formatter-row .json-formatter-key {
+                  color: #00008B;
+                  padding-right: 0.2rem;
+                }
+                .json-formatter-row .json-formatter-toggler-link {
+                  cursor: pointer;
+                }
+                .json-formatter-row .json-formatter-toggler {
+                  line-height: 1.2rem;
+                  font-size: 0.7rem;
+                  vertical-align: middle;
+                  opacity: 0.6;
+                  cursor: pointer;
+                  padding-right: 0.2rem;
+                }
+                .json-formatter-row .json-formatter-toggler:after {
+                  display: inline-block;
+                  transition: transform 100ms ease-in;
+                  content: "\25BA";
+                }
+                .json-formatter-row > a > .json-formatter-preview-text {
+                  opacity: 0;
+                  transition: opacity 0.15s ease-in;
+                  font-style: italic;
+                }
+                .json-formatter-row:hover > a > .json-formatter-preview-text {
+                  opacity: 0.6;
+                }
+                .json-formatter-row.json-formatter-open > .json-formatter-toggler-link .json-formatter-toggler:after {
+                  transform: rotate(90deg);
+                }
+                .json-formatter-row.json-formatter-open > .json-formatter-children:after {
+                  display: inline-block;
+                }
+                .json-formatter-row.json-formatter-open > a > .json-formatter-preview-text {
+                  display: none;
+                }
+                .json-formatter-row.json-formatter-open.json-formatter-empty:after {
+                  display: block;
+                }
+                .json-formatter-dark.json-formatter-row {
+                  font-family: monospace;
+                }
+                .json-formatter-dark.json-formatter-row,
+                .json-formatter-dark.json-formatter-row a,
+                .json-formatter-dark.json-formatter-row a:hover {
+                  color: white;
+                  text-decoration: none;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-row {
+                  margin-left: 1rem;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-children.json-formatter-empty {
+                  opacity: 0.5;
+                  margin-left: 1rem;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-children.json-formatter-empty:after {
+                  display: none;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-children.json-formatter-empty.json-formatter-object:after {
+                  content: "No properties";
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-children.json-formatter-empty.json-formatter-array:after {
+                  content: "[]";
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-string,
+                .json-formatter-dark.json-formatter-row .json-formatter-stringifiable {
+                  color: #31F031;
+                  white-space: pre;
+                  word-wrap: break-word;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-number {
+                  color: #66C2FF;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-boolean {
+                  color: #EC4242;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-null {
+                  color: #EEC97D;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-undefined {
+                  color: #ef8fbe;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-function {
+                  color: #FD48CB;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-date {
+                  background-color: rgba(255, 255, 255, 0.05);
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-url {
+                  text-decoration: underline;
+                  color: #027BFF;
+                  cursor: pointer;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-bracket {
+                  color: #9494FF;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-key {
+                  color: #23A0DB;
+                  padding-right: 0.2rem;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-toggler-link {
+                  cursor: pointer;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-toggler {
+                  line-height: 1.2rem;
+                  font-size: 0.7rem;
+                  vertical-align: middle;
+                  opacity: 0.6;
+                  cursor: pointer;
+                  padding-right: 0.2rem;
+                }
+                .json-formatter-dark.json-formatter-row .json-formatter-toggler:after {
+                  display: inline-block;
+                  transition: transform 100ms ease-in;
+                  content: "\25BA";
+                }
+                .json-formatter-dark.json-formatter-row > a > .json-formatter-preview-text {
+                  opacity: 0;
+                  transition: opacity 0.15s ease-in;
+                  font-style: italic;
+                }
+                .json-formatter-dark.json-formatter-row:hover > a > .json-formatter-preview-text {
+                  opacity: 0.6;
+                }
+                .json-formatter-dark.json-formatter-row.json-formatter-open > .json-formatter-toggler-link .json-formatter-toggler:after {
+                  transform: rotate(90deg);
+                }
+                .json-formatter-dark.json-formatter-row.json-formatter-open > .json-formatter-children:after {
+                  display: inline-block;
+                }
+                .json-formatter-dark.json-formatter-row.json-formatter-open > a > .json-formatter-preview-text {
+                  display: none;
+                }
+                .json-formatter-dark.json-formatter-row.json-formatter-open.json-formatter-empty:after {
+                  display: block;
+                }
+
+        </style>
+        <style>
+            .codehilite .hll { background-color: #ffffcc }
+                .codehilite  { background: #f8f8f8; }
+                .codehilite .c { color: #408080; font-style: italic } /* Comment */
+                .codehilite .err { border: 1px solid #FF0000 } /* Error */
+                .codehilite .k { color: #008000; font-weight: bold } /* Keyword */
+                .codehilite .o { color: #666666 } /* Operator */
+                .codehilite .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+                .codehilite .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+                .codehilite .cp { color: #BC7A00 } /* Comment.Preproc */
+                .codehilite .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+                .codehilite .c1 { color: #408080; font-style: italic } /* Comment.Single */
+                .codehilite .cs { color: #408080; font-style: italic } /* Comment.Special */
+                .codehilite .gd { color: #A00000 } /* Generic.Deleted */
+                .codehilite .ge { font-style: italic } /* Generic.Emph */
+                .codehilite .gr { color: #FF0000 } /* Generic.Error */
+                .codehilite .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+                .codehilite .gi { color: #00A000 } /* Generic.Inserted */
+                .codehilite .go { color: #888888 } /* Generic.Output */
+                .codehilite .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+                .codehilite .gs { font-weight: bold } /* Generic.Strong */
+                .codehilite .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+                .codehilite .gt { color: #0044DD } /* Generic.Traceback */
+                .codehilite .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+                .codehilite .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+                .codehilite .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+                .codehilite .kp { color: #008000 } /* Keyword.Pseudo */
+                .codehilite .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+                .codehilite .kt { color: #B00040 } /* Keyword.Type */
+                .codehilite .m { color: #666666 } /* Literal.Number */
+                .codehilite .s { color: #BA2121 } /* Literal.String */
+                .codehilite .na { color: #7D9029 } /* Name.Attribute */
+                .codehilite .nb { color: #008000 } /* Name.Builtin */
+                .codehilite .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+                .codehilite .no { color: #880000 } /* Name.Constant */
+                .codehilite .nd { color: #AA22FF } /* Name.Decorator */
+                .codehilite .ni { color: #999999; font-weight: bold } /* Name.Entity */
+                .codehilite .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+                .codehilite .nf { color: #0000FF } /* Name.Function */
+                .codehilite .nl { color: #A0A000 } /* Name.Label */
+                .codehilite .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+                .codehilite .nt { color: #008000; font-weight: bold } /* Name.Tag */
+                .codehilite .nv { color: #19177C } /* Name.Variable */
+                .codehilite .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+                .codehilite .w { color: #bbbbbb } /* Text.Whitespace */
+                .codehilite .mb { color: #666666 } /* Literal.Number.Bin */
+                .codehilite .mf { color: #666666 } /* Literal.Number.Float */
+                .codehilite .mh { color: #666666 } /* Literal.Number.Hex */
+                .codehilite .mi { color: #666666 } /* Literal.Number.Integer */
+                .codehilite .mo { color: #666666 } /* Literal.Number.Oct */
+                .codehilite .sa { color: #BA2121 } /* Literal.String.Affix */
+                .codehilite .sb { color: #BA2121 } /* Literal.String.Backtick */
+                .codehilite .sc { color: #BA2121 } /* Literal.String.Char */
+                .codehilite .dl { color: #BA2121 } /* Literal.String.Delimiter */
+                .codehilite .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+                .codehilite .s2 { color: #BA2121 } /* Literal.String.Double */
+                .codehilite .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+                .codehilite .sh { color: #BA2121 } /* Literal.String.Heredoc */
+                .codehilite .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+                .codehilite .sx { color: #008000 } /* Literal.String.Other */
+                .codehilite .sr { color: #BB6688 } /* Literal.String.Regex */
+                .codehilite .s1 { color: #BA2121 } /* Literal.String.Single */
+                .codehilite .ss { color: #19177C } /* Literal.String.Symbol */
+                .codehilite .bp { color: #008000 } /* Name.Builtin.Pseudo */
+                .codehilite .fm { color: #0000FF } /* Name.Function.Magic */
+                .codehilite .vc { color: #19177C } /* Name.Variable.Class */
+                .codehilite .vg { color: #19177C } /* Name.Variable.Global */
+                .codehilite .vi { color: #19177C } /* Name.Variable.Instance */
+                .codehilite .vm { color: #19177C } /* Name.Variable.Magic */
+                .codehilite .il { color: #666666 } /* Literal.Number.Integer.Long */
+
+                .markdown h1 { margin-block-start: 0.34em }
+                .markdown h2 { margin-block-start: 0.42em }
+                .markdown h3 { margin-block-start: 0.5em }
+                .markdown h4 { margin-block-start: 0.67em }
+                .markdown h5 { margin-block-start: 0.84em }
+                .markdown h6 { margin-block-start: 1.17em }
+                .markdown ul { padding-inline-start: 2em }
+                .markdown ol { padding-inline-start: 2em }
+                .markdown strong { font-weight: 600 }
+                .markdown a { color: -webkit-link }
+                .markdown a { color: -moz-hyperlinkText }
+
+        </style>
+        <style>
+            .widget-box {
+                	min-height: 20px;
+                	background-color: #f5f5f5;
+                	border: 1px solid #e3e3e3 !important;
+                	border-radius: 4px;
+                	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+                	box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+                	overflow-x: hidden;
+                	overflow-y: hidden;
+                }
+
+                .scrollable {
+                  overflow: scroll;
+                }
+
+                progress {
+                	appearance: none;
+                	-moz-appearance: none;
+                	-webkit-appearance: none;
+
+                	border: none;
+                	height: 20px;
+                	background-color: whiteSmoke;
+                	border-radius: 3px;
+                	box-shadow: 0 2px 3px rgba(0,0,0,.5) inset;
+                	color: royalblue;
+                	position: relative;
+                	margin: 0 0 1.5em;
+                }
+
+                progress[value]::-webkit-progress-bar {
+                	background-color: whiteSmoke;
+                	border-radius: 3px;
+                	box-shadow: 0 2px 3px rgba(0,0,0,.5) inset;
+                }
+
+                progress[value]::-webkit-progress-value {
+                	position: relative;
+
+                	background-size: 35px 20px, 100% 100%, 100% 100%;
+                	border-radius:3px;
+                }
+
+                progress.active:not([value])::before {
+                	background-position: 10%;
+                	animation-name: stripes;
+                	animation-duration: 3s;
+                	animation-timing-function: linear;
+                	animation-iteration-count: infinite;
+                }
+
+                progress[value]::-moz-progress-bar {
+                	background-size: 35px 20px, 100% 100%, 100% 100%;
+                	border-radius:3px;
+                }
+
+                progress:not([value])::-moz-progress-bar {
+                	border-radius:3px;
+                	background:
+                	linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, 0.2) 33%, rgba(0, 0, 0, 0.2) 66%, transparent 66%) left/2.5em 1.5em;
+
+                }
+
+                progress.active:not([value])::-moz-progress-bar {
+                	background-position: 10%;
+                	animation-name: stripes;
+                	animation-duration: 3s;
+                	animation-timing-function: linear;
+                	animation-iteration-count: infinite;
+                }
+
+                progress.active:not([value])::-webkit-progress-bar {
+                	background-position: 10%;
+                	animation-name: stripes;
+                	animation-duration: 3s;
+                	animation-timing-function: linear;
+                	animation-iteration-count: infinite;
+                }
+
+                progress.primary[value]::-webkit-progress-value { background-color: #007bff; }
+                progress.primary:not([value])::before { background-color: #007bff; }
+                progress.primary:not([value])::-webkit-progress-bar { background-color: #007bff; }
+                progress.primary::-moz-progress-bar { background-color: #007bff; }
+
+                progress.secondary[value]::-webkit-progress-value { background-color: #6c757d; }
+                progress.secondary:not([value])::before { background-color: #6c757d; }
+                progress.secondary:not([value])::-webkit-progress-bar { background-color: #6c757d; }
+                progress.secondary::-moz-progress-bar { background-color: #6c757d; }
+
+                progress.success[value]::-webkit-progress-value { background-color: #28a745; }
+                progress.success:not([value])::before { background-color: #28a745; }
+                progress.success:not([value])::-webkit-progress-bar { background-color: #28a745; }
+                progress.success::-moz-progress-bar { background-color: #28a745; }
+
+                progress.danger[value]::-webkit-progress-value { background-color: #dc3545; }
+                progress.danger:not([value])::before { background-color: #dc3545; }
+                progress.danger:not([value])::-webkit-progress-bar { background-color: #dc3545; }
+                progress.danger::-moz-progress-bar { background-color: #dc3545; }
+
+                progress.warning[value]::-webkit-progress-value { background-color: #ffc107; }
+                progress.warning:not([value])::before { background-color: #ffc107; }
+                progress.warning:not([value])::-webkit-progress-bar { background-color: #ffc107; }
+                progress.warning::-moz-progress-bar { background-color: #ffc107; }
+
+                progress.info[value]::-webkit-progress-value { background-color: #17a2b8; }
+                progress.info:not([value])::before { background-color: #17a2b8; }
+                progress.info:not([value])::-webkit-progress-bar { background-color: #17a2b8; }
+                progress.info::-moz-progress-bar { background-color: #17a2b8; }
+
+                progress.light[value]::-webkit-progress-value { background-color: #f8f9fa; }
+                progress.light:not([value])::before { background-color: #f8f9fa; }
+                progress.light:not([value])::-webkit-progress-bar { background-color: #f8f9fa; }
+                progress.light::-moz-progress-bar { background-color: #f8f9fa; }
+
+                progress.dark[value]::-webkit-progress-value { background-color: #343a40; }
+                progress.dark:not([value])::-webkit-progress-bar { background-color: #343a40; }
+                progress.dark:not([value])::before { background-color: #343a40; }
+                progress.dark::-moz-progress-bar { background-color: #343a40; }
+
+                progress:not([value])::-webkit-progress-bar {
+                	border-radius: 3px;
+                	background:
+                	linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, 0.2) 33%, rgba(0, 0, 0, 0.2) 66%, transparent 66%) left/2.5em 1.5em;
+                }
+                progress:not([value])::before {
+                	content:" ";
+                	position:absolute;
+                	height: 20px;
+                	top:0;
+                	left:0;
+                	right:0;
+                	bottom:0;
+                	border-radius: 3px;
+                	background:
+                	linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, 0.2) 33%, rgba(0, 0, 0, 0.2) 66%, transparent 66%) left/2.5em 1.5em;
+                }
+
+                @keyframes stripes {
+                  from {background-position: 0%}
+                  to {background-position: 100%}
+                }
+        </style>
+        
+        
+          
+        <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.js"></script>
+        <script type="text/javascript">
+            Bokeh.set_log_level("info");
+        </script>
+        
+      
+      
+    
+  </head>
+  
+  
+  <body>
+    
+      
+        
+          
+          
+            
+              <div class="bk-root" id="3c345ff1-3063-4421-a418-98b2432dd5d6" data-root-id="1106"></div>
+            
+          
+        
+      
+      
+        <script type="application/json" id="1292">
+          {"8ffa84cd-7285-4afd-a26e-421720c182ba":{"roots":{"references":[{"attributes":{"fill_color":{"field":"zvalues","transform":{"id":"1140","type":"LinearColorMapper"}},"height":{"units":"data","value":1},"line_color":{"value":"white"},"width":{"units":"data","value":1},"x":{"field":"columns"},"y":{"field":"index"}},"id":"1144","type":"Rect"},{"attributes":{},"id":"1152","type":"CategoricalTickFormatter"},{"attributes":{"above":[{"id":"1120","type":"CategoricalAxis"}],"align":null,"below":[],"center":[{"id":"1123","type":"Grid"},{"id":"1127","type":"Grid"}],"left":[{"id":"1124","type":"CategoricalAxis"}],"margin":null,"min_border_bottom":10,"min_border_left":10,"min_border_right":10,"min_border_top":10,"plot_height":3000,"plot_width":900,"renderers":[{"id":"1146","type":"GlyphRenderer"}],"right":[{"id":"1149","type":"ColorBar"}],"sizing_mode":"fixed","title":{"id":"1112","type":"Title"},"toolbar":{"id":"1133","type":"Toolbar"},"x_range":{"id":"1108","type":"FactorRange"},"x_scale":{"id":"1116","type":"CategoricalScale"},"y_range":{"id":"1109","type":"FactorRange"},"y_scale":{"id":"1118","type":"CategoricalScale"}},"id":"1111","subtype":"Figure","type":"Plot"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer01690","sizing_mode":"stretch_width"},"id":"1164","type":"Spacer"},{"attributes":{},"id":"1128","type":"SaveTool"},{"attributes":{"data_source":{"id":"1141","type":"ColumnDataSource"},"glyph":{"id":"1144","type":"Rect"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1145","type":"Rect"},"selection_glyph":null,"view":{"id":"1147","type":"CDSView"}},"id":"1146","type":"GlyphRenderer"},{"attributes":{},"id":"1154","type":"CategoricalTickFormatter"},{"attributes":{},"id":"1130","type":"WheelZoomTool"},{"attributes":{},"id":"1163","type":"UnionRenderers"},{"attributes":{"text":"Altera\u00e7\u00e3o na Movimenta\u00e7\u00e3o da Capital do Rio de Janeiro (porcentagem)"},"id":"1112","type":"Title"},{"attributes":{},"id":"1129","type":"PanTool"},{"attributes":{"high":28.0,"low":-88.0,"nan_color":"white","palette":["#fcfea4","#fafda0","#f9fc9d","#f7fb99","#f6fa95","#f5f891","#f4f78d","#f3f689","#f2f485","#f2f381","#f1f27d","#f1f079","#f1ee74","#f1ed70","#f1eb6c","#f1e968","#f1e864","#f2e660","#f2e45d","#f3e259","#f3e056","#f3de52","#f4dc4f","#f4db4b","#f5d948","#f5d745","#f6d542","#f6d33f","#f7d13c","#f7cf3a","#f8cd37","#f8cb34","#f8c931","#f9c72f","#f9c52c","#f9c32a","#fac128","#fabf25","#fabd23","#fabb21","#fbb91e","#fbb71c","#fbb51a","#fbb318","#fbb116","#fbb014","#fbae12","#fbac10","#fbaa0e","#fba80d","#fba60b","#fba40a","#fba208","#fba007","#fb9e07","#fb9d06","#fb9b06","#fb9906","#fa9706","#fa9506","#fa9306","#fa9107","#f99008","#f98e08","#f98c09","#f88a0b","#f8880c","#f8870d","#f7850e","#f78310","#f68111","#f68012","#f57e14","#f57c15","#f47a16","#f37918","#f37719","#f2751a","#f2741c","#f1721d","#f0701e","#f06f1f","#ef6d21","#ee6c22","#ed6a23","#ed6825","#ec6726","#eb6527","#ea6428","#e9622a","#e8612b","#e75f2c","#e65e2d","#e65c2e","#e55b30","#e45a31","#e35832","#e25733","#e05634","#df5436","#de5337","#dd5238","#dc5039","#db4f3a","#da4e3b","#d94d3d","#d74b3e","#d64a3f","#d54940","#d44841","#d24742","#d14643","#d04544","#cf4446","#cd4247","#cc4148","#cb4049","#c93f4a","#c83e4b","#c73e4c","#c53d4d","#c43c4e","#c23b4f","#c13a50","#bf3951","#be3852","#bd3753","#bb3754","#ba3655","#b83556","#b73456","#b53357","#b43358","#b23259","#b1315a","#af315b","#ae305b","#ac2f5c","#ab2e5d","#a92e5e","#a72d5f","#a62c5f","#a42c60","#a32b61","#a12b61","#a02a62","#9e2963","#9c2963","#9b2864","#992864","#982765","#962666","#952666","#932567","#912567","#902468","#8e2468","#8d2369","#8b2269","#892269","#88216a","#86216a","#85206a","#83206b","#811f6b","#801f6b","#7e1e6c","#7d1d6c","#7b1d6c","#7a1c6d","#781c6d","#761b6d","#751b6d","#731a6d","#72196d","#70196e","#6e186e","#6d186e","#6b176e","#6a176e","#68166e","#66156e","#65156e","#63146e","#62146e","#60136e","#5f126e","#5d126e","#5b116e","#5a116d","#58106d","#570f6d","#550f6d","#530e6d","#520e6c","#500d6c","#4f0d6c","#4d0c6b","#4b0c6b","#4a0b6a","#480b6a","#460a69","#450a69","#430a68","#410967","#400966","#3e0966","#3c0965","#3b0964","#390962","#370961","#350960","#34095f","#32095d","#300a5c","#2e0a5a","#2d0a58","#2b0a56","#290b54","#270b52","#260b50","#240b4e","#220b4c","#200c4a","#1f0c47","#1d0c45","#1c0c43","#1a0b40","#190b3e","#170b3b","#160b39","#140b36","#130a34","#120a32","#10092f","#0f092d","#0e082a","#0d0828","#0b0726","#0a0723","#090621","#08061f","#07051d","#06041b","#050418","#040316","#040314","#030212","#020210","#02010e","#01010b","#010109","#010007","#000006","#000004","#000003"]},"id":"1140","type":"LinearColorMapper"},{"attributes":{"overlay":{"id":"1161","type":"BoxAnnotation"}},"id":"1131","type":"BoxZoomTool"},{"attributes":{},"id":"1118","type":"CategoricalScale"},{"attributes":{"source":{"id":"1141","type":"ColumnDataSource"}},"id":"1147","type":"CDSView"},{"attributes":{},"id":"1148","type":"BasicTicker"},{"attributes":{"bar_line_color":{"value":"black"},"color_mapper":{"id":"1140","type":"LinearColorMapper"},"formatter":{"id":"1156","type":"BasicTickFormatter"},"label_standoff":8,"location":[0,0],"major_label_text_font_size":{"value":"8pt"},"major_tick_line_color":{"value":"black"},"ticker":{"id":"1148","type":"BasicTicker"},"title_text_font_size":{"value":"10pt"}},"id":"1149","type":"ColorBar"},{"attributes":{},"id":"1116","type":"CategoricalScale"},{"attributes":{},"id":"1132","type":"ResetTool"},{"attributes":{"children":[{"id":"1107","type":"Spacer"},{"id":"1111","subtype":"Figure","type":"Plot"},{"id":"1164","type":"Spacer"}],"margin":[0,0,0,0],"name":"Row01685","tags":["embedded"]},"id":"1106","type":"Row"},{"attributes":{"axis_label":"Categoria de lugares","axis_label_text_font_size":{"value":"10pt"},"bounds":"auto","formatter":{"id":"1152","type":"CategoricalTickFormatter"},"major_label_orientation":"horizontal","ticker":{"id":"1121","type":"CategoricalTicker"}},"id":"1120","type":"CategoricalAxis"},{"attributes":{"dimension":1,"grid_line_color":null,"ticker":{"id":"1125","type":"CategoricalTicker"}},"id":"1127","type":"Grid"},{"attributes":{"grid_line_color":null,"ticker":{"id":"1121","type":"CategoricalTicker"}},"id":"1123","type":"Grid"},{"attributes":{"callback":null,"factors":["2020-10-23","2020-10-22","2020-10-21","2020-10-20","2020-10-19","2020-10-18","2020-10-17","2020-10-16","2020-10-15","2020-10-14","2020-10-13","2020-10-12","2020-10-11","2020-10-10","2020-10-09","2020-10-08","2020-10-07","2020-10-06","2020-10-05","2020-10-04","2020-10-03","2020-10-02","2020-10-01","2020-09-30","2020-09-29","2020-09-28","2020-09-27","2020-09-26","2020-09-25","2020-09-24","2020-09-23","2020-09-22","2020-09-21","2020-09-20","2020-09-19","2020-09-18","2020-09-17","2020-09-16","2020-09-15","2020-09-14","2020-09-13","2020-09-12","2020-09-11","2020-09-10","2020-09-09","2020-09-08","2020-09-07","2020-09-06","2020-09-05","2020-09-04","2020-09-03","2020-09-02","2020-09-01","2020-08-31","2020-08-30","2020-08-29","2020-08-28","2020-08-27","2020-08-26","2020-08-25","2020-08-24","2020-08-23","2020-08-22","2020-08-21","2020-08-20","2020-08-19","2020-08-18","2020-08-17","2020-08-16","2020-08-15","2020-08-14","2020-08-13","2020-08-12","2020-08-11","2020-08-10","2020-08-09","2020-08-08","2020-08-07","2020-08-06","2020-08-05","2020-08-04","2020-08-03","2020-08-02","2020-08-01","2020-07-31","2020-07-30","2020-07-29","2020-07-28","2020-07-27","2020-07-26","2020-07-25","2020-07-24","2020-07-23","2020-07-22","2020-07-21","2020-07-20","2020-07-19","2020-07-18","2020-07-17","2020-07-16","2020-07-15","2020-07-14","2020-07-13","2020-07-12","2020-07-11","2020-07-10","2020-07-09","2020-07-08","2020-07-07","2020-07-06","2020-07-05","2020-07-04","2020-07-03","2020-07-02","2020-07-01","2020-06-30","2020-06-29","2020-06-28","2020-06-27","2020-06-26","2020-06-25","2020-06-24","2020-06-23","2020-06-22","2020-06-21","2020-06-20","2020-06-19","2020-06-18","2020-06-17","2020-06-16","2020-06-15","2020-06-14","2020-06-13","2020-06-12","2020-06-11","2020-06-10","2020-06-09","2020-06-08","2020-06-07","2020-06-06","2020-06-05","2020-06-04","2020-06-03","2020-06-02","2020-06-01","2020-05-31","2020-05-30","2020-05-29","2020-05-28","2020-05-27","2020-05-26","2020-05-25","2020-05-24","2020-05-23","2020-05-22","2020-05-21","2020-05-20","2020-05-19","2020-05-18","2020-05-17","2020-05-16","2020-05-15","2020-05-14","2020-05-13","2020-05-12","2020-05-11","2020-05-10","2020-05-09","2020-05-08","2020-05-07","2020-05-06","2020-05-05","2020-05-04","2020-05-03","2020-05-02","2020-05-01","2020-04-30","2020-04-29","2020-04-28","2020-04-27","2020-04-26","2020-04-25","2020-04-24","2020-04-23","2020-04-22","2020-04-21","2020-04-20","2020-04-19","2020-04-18","2020-04-17","2020-04-16","2020-04-15","2020-04-14","2020-04-13","2020-04-12","2020-04-11","2020-04-10","2020-04-09","2020-04-08","2020-04-07","2020-04-06","2020-04-05","2020-04-04","2020-04-03","2020-04-02","2020-04-01"],"tags":[[["index","index",null]]]},"id":"1109","type":"FactorRange"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"field":"zvalues","transform":{"id":"1140","type":"LinearColorMapper"}},"height":{"units":"data","value":1},"line_alpha":{"value":0.1},"line_color":{"value":"white"},"width":{"units":"data","value":1},"x":{"field":"columns"},"y":{"field":"index"}},"id":"1145","type":"Rect"},{"attributes":{"callback":null,"data":{"columns":["Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Mercados/Farm\u00e1cias","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Varejo/Recrea\u00e7\u00e3o","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Parques/Praias","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Trabalho","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia","Resid\u00eancia"],"index":["2020-04-01","2020-04-02","2020-04-03","2020-04-04","2020-04-05","2020-04-06","2020-04-07","2020-04-08","2020-04-09","2020-04-10","2020-04-11","2020-04-12","2020-04-13","2020-04-14","2020-04-15","2020-04-16","2020-04-17","2020-04-18","2020-04-19","2020-04-20","2020-04-21","2020-04-22","2020-04-23","2020-04-24","2020-04-25","2020-04-26","2020-04-27","2020-04-28","2020-04-29","2020-04-30","2020-05-01","2020-05-02","2020-05-03","2020-05-04","2020-05-05","2020-05-06","2020-05-07","2020-05-08","2020-05-09","2020-05-10","2020-05-11","2020-05-12","2020-05-13","2020-05-14","2020-05-15","2020-05-16","2020-05-17","2020-05-18","2020-05-19","2020-05-20","2020-05-21","2020-05-22","2020-05-23","2020-05-24","2020-05-25","2020-05-26","2020-05-27","2020-05-28","2020-05-29","2020-05-30","2020-05-31","2020-06-01","2020-06-02","2020-06-03","2020-06-04","2020-06-05","2020-06-06","2020-06-07","2020-06-08","2020-06-09","2020-06-10","2020-06-11","2020-06-12","2020-06-13","2020-06-14","2020-06-15","2020-06-16","2020-06-17","2020-06-18","2020-06-19","2020-06-20","2020-06-21","2020-06-22","2020-06-23","2020-06-24","2020-06-25","2020-06-26","2020-06-27","2020-06-28","2020-06-29","2020-06-30","2020-07-01","2020-07-02","2020-07-03","2020-07-04","2020-07-05","2020-07-06","2020-07-07","2020-07-08","2020-07-09","2020-07-10","2020-07-11","2020-07-12","2020-07-13","2020-07-14","2020-07-15","2020-07-16","2020-07-17","2020-07-18","2020-07-19","2020-07-20","2020-07-21","2020-07-22","2020-07-23","2020-07-24","2020-07-25","2020-07-26","2020-07-27","2020-07-28","2020-07-29","2020-07-30","2020-07-31","2020-08-01","2020-08-02","2020-08-03","2020-08-04","2020-08-05","2020-08-06","2020-08-07","2020-08-08","2020-08-09","2020-08-10","2020-08-11","2020-08-12","2020-08-13","2020-08-14","2020-08-15","2020-08-16","2020-08-17","2020-08-18","2020-08-19","2020-08-20","2020-08-21","2020-08-22","2020-08-23","2020-08-24","2020-08-25","2020-08-26","2020-08-27","2020-08-28","2020-08-29","2020-08-30","2020-08-31","2020-09-01","2020-09-02","2020-09-03","2020-09-04","2020-09-05","2020-09-06","2020-09-07","2020-09-08","2020-09-09","2020-09-10","2020-09-11","2020-09-12","2020-09-13","2020-09-14","2020-09-15","2020-09-16","2020-09-17","2020-09-18","2020-09-19","2020-09-20","2020-09-21","2020-09-22","2020-09-23","2020-09-24","2020-09-25","2020-09-26","2020-09-27","2020-09-28","2020-09-29","2020-09-30","2020-10-01","2020-10-02","2020-10-03","2020-10-04","2020-10-05","2020-10-06","2020-10-07","2020-10-08","2020-10-09","2020-10-10","2020-10-11","2020-10-12","2020-10-13","2020-10-14","2020-10-15","2020-10-16","2020-10-17","2020-10-18","2020-10-19","2020-10-20","2020-10-21","2020-10-22","2020-10-23","2020-04-01","2020-04-02","2020-04-03","2020-04-04","2020-04-05","2020-04-06","2020-04-07","2020-04-08","2020-04-09","2020-04-10","2020-04-11","2020-04-12","2020-04-13","2020-04-14","2020-04-15","2020-04-16","2020-04-17","2020-04-18","2020-04-19","2020-04-20","2020-04-21","2020-04-22","2020-04-23","2020-04-24","2020-04-25","2020-04-26","2020-04-27","2020-04-28","2020-04-29","2020-04-30","2020-05-01","2020-05-02","2020-05-03","2020-05-04","2020-05-05","2020-05-06","2020-05-07","2020-05-08","2020-05-09","2020-05-10","2020-05-11","2020-05-12","2020-05-13","2020-05-14","2020-05-15","2020-05-16","2020-05-17","2020-05-18","2020-05-19","2020-05-20","2020-05-21","2020-05-22","2020-05-23","2020-05-24","2020-05-25","2020-05-26","2020-05-27","2020-05-28","2020-05-29","2020-05-30","2020-05-31","2020-06-01","2020-06-02","2020-06-03","2020-06-04","2020-06-05","2020-06-06","2020-06-07","2020-06-08","2020-06-09","2020-06-10","2020-06-11","2020-06-12","2020-06-13","2020-06-14","2020-06-15","2020-06-16","2020-06-17","2020-06-18","2020-06-19","2020-06-20","2020-06-21","2020-06-22","2020-06-23","2020-06-24","2020-06-25","2020-06-26","2020-06-27","2020-06-28","2020-06-29","2020-06-30","2020-07-01","2020-07-02","2020-07-03","2020-07-04","2020-07-05","2020-07-06","2020-07-07","2020-07-08","2020-07-09","2020-07-10","2020-07-11","2020-07-12","2020-07-13","2020-07-14","2020-07-15","2020-07-16","2020-07-17","2020-07-18","2020-07-19","2020-07-20","2020-07-21","2020-07-22","2020-07-23","2020-07-24","2020-07-25","2020-07-26","2020-07-27","2020-07-28","2020-07-29","2020-07-30","2020-07-31","2020-08-01","2020-08-02","2020-08-03","2020-08-04","2020-08-05","2020-08-06","2020-08-07","2020-08-08","2020-08-09","2020-08-10","2020-08-11","2020-08-12","2020-08-13","2020-08-14","2020-08-15","2020-08-16","2020-08-17","2020-08-18","2020-08-19","2020-08-20","2020-08-21","2020-08-22","2020-08-23","2020-08-24","2020-08-25","2020-08-26","2020-08-27","2020-08-28","2020-08-29","2020-08-30","2020-08-31","2020-09-01","2020-09-02","2020-09-03","2020-09-04","2020-09-05","2020-09-06","2020-09-07","2020-09-08","2020-09-09","2020-09-10","2020-09-11","2020-09-12","2020-09-13","2020-09-14","2020-09-15","2020-09-16","2020-09-17","2020-09-18","2020-09-19","2020-09-20","2020-09-21","2020-09-22","2020-09-23","2020-09-24","2020-09-25","2020-09-26","2020-09-27","2020-09-28","2020-09-29","2020-09-30","2020-10-01","2020-10-02","2020-10-03","2020-10-04","2020-10-05","2020-10-06","2020-10-07","2020-10-08","2020-10-09","2020-10-10","2020-10-11","2020-10-12","2020-10-13","2020-10-14","2020-10-15","2020-10-16","2020-10-17","2020-10-18","2020-10-19","2020-10-20","2020-10-21","2020-10-22","2020-10-23","2020-04-01","2020-04-02","2020-04-03","2020-04-04","2020-04-05","2020-04-06","2020-04-07","2020-04-08","2020-04-09","2020-04-10","2020-04-11","2020-04-12","2020-04-13","2020-04-14","2020-04-15","2020-04-16","2020-04-17","2020-04-18","2020-04-19","2020-04-20","2020-04-21","2020-04-22","2020-04-23","2020-04-24","2020-04-25","2020-04-26","2020-04-27","2020-04-28","2020-04-29","2020-04-30","2020-05-01","2020-05-02","2020-05-03","2020-05-04","2020-05-05","2020-05-06","2020-05-07","2020-05-08","2020-05-09","2020-05-10","2020-05-11","2020-05-12","2020-05-13","2020-05-14","2020-05-15","2020-05-16","2020-05-17","2020-05-18","2020-05-19","2020-05-20","2020-05-21","2020-05-22","2020-05-23","2020-05-24","2020-05-25","2020-05-26","2020-05-27","2020-05-28","2020-05-29","2020-05-30","2020-05-31","2020-06-01","2020-06-02","2020-06-03","2020-06-04","2020-06-05","2020-06-06","2020-06-07","2020-06-08","2020-06-09","2020-06-10","2020-06-11","2020-06-12","2020-06-13","2020-06-14","2020-06-15","2020-06-16","2020-06-17","2020-06-18","2020-06-19","2020-06-20","2020-06-21","2020-06-22","2020-06-23","2020-06-24","2020-06-25","2020-06-26","2020-06-27","2020-06-28","2020-06-29","2020-06-30","2020-07-01","2020-07-02","2020-07-03","2020-07-04","2020-07-05","2020-07-06","2020-07-07","2020-07-08","2020-07-09","2020-07-10","2020-07-11","2020-07-12","2020-07-13","2020-07-14","2020-07-15","2020-07-16","2020-07-17","2020-07-18","2020-07-19","2020-07-20","2020-07-21","2020-07-22","2020-07-23","2020-07-24","2020-07-25","2020-07-26","2020-07-27","2020-07-28","2020-07-29","2020-07-30","2020-07-31","2020-08-01","2020-08-02","2020-08-03","2020-08-04","2020-08-05","2020-08-06","2020-08-07","2020-08-08","2020-08-09","2020-08-10","2020-08-11","2020-08-12","2020-08-13","2020-08-14","2020-08-15","2020-08-16","2020-08-17","2020-08-18","2020-08-19","2020-08-20","2020-08-21","2020-08-22","2020-08-23","2020-08-24","2020-08-25","2020-08-26","2020-08-27","2020-08-28","2020-08-29","2020-08-30","2020-08-31","2020-09-01","2020-09-02","2020-09-03","2020-09-04","2020-09-05","2020-09-06","2020-09-07","2020-09-08","2020-09-09","2020-09-10","2020-09-11","2020-09-12","2020-09-13","2020-09-14","2020-09-15","2020-09-16","2020-09-17","2020-09-18","2020-09-19","2020-09-20","2020-09-21","2020-09-22","2020-09-23","2020-09-24","2020-09-25","2020-09-26","2020-09-27","2020-09-28","2020-09-29","2020-09-30","2020-10-01","2020-10-02","2020-10-03","2020-10-04","2020-10-05","2020-10-06","2020-10-07","2020-10-08","2020-10-09","2020-10-10","2020-10-11","2020-10-12","2020-10-13","2020-10-14","2020-10-15","2020-10-16","2020-10-17","2020-10-18","2020-10-19","2020-10-20","2020-10-21","2020-10-22","2020-10-23","2020-04-01","2020-04-02","2020-04-03","2020-04-04","2020-04-05","2020-04-06","2020-04-07","2020-04-08","2020-04-09","2020-04-10","2020-04-11","2020-04-12","2020-04-13","2020-04-14","2020-04-15","2020-04-16","2020-04-17","2020-04-18","2020-04-19","2020-04-20","2020-04-21","2020-04-22","2020-04-23","2020-04-24","2020-04-25","2020-04-26","2020-04-27","2020-04-28","2020-04-29","2020-04-30","2020-05-01","2020-05-02","2020-05-03","2020-05-04","2020-05-05","2020-05-06","2020-05-07","2020-05-08","2020-05-09","2020-05-10","2020-05-11","2020-05-12","2020-05-13","2020-05-14","2020-05-15","2020-05-16","2020-05-17","2020-05-18","2020-05-19","2020-05-20","2020-05-21","2020-05-22","2020-05-23","2020-05-24","2020-05-25","2020-05-26","2020-05-27","2020-05-28","2020-05-29","2020-05-30","2020-05-31","2020-06-01","2020-06-02","2020-06-03","2020-06-04","2020-06-05","2020-06-06","2020-06-07","2020-06-08","2020-06-09","2020-06-10","2020-06-11","2020-06-12","2020-06-13","2020-06-14","2020-06-15","2020-06-16","2020-06-17","2020-06-18","2020-06-19","2020-06-20","2020-06-21","2020-06-22","2020-06-23","2020-06-24","2020-06-25","2020-06-26","2020-06-27","2020-06-28","2020-06-29","2020-06-30","2020-07-01","2020-07-02","2020-07-03","2020-07-04","2020-07-05","2020-07-06","2020-07-07","2020-07-08","2020-07-09","2020-07-10","2020-07-11","2020-07-12","2020-07-13","2020-07-14","2020-07-15","2020-07-16","2020-07-17","2020-07-18","2020-07-19","2020-07-20","2020-07-21","2020-07-22","2020-07-23","2020-07-24","2020-07-25","2020-07-26","2020-07-27","2020-07-28","2020-07-29","2020-07-30","2020-07-31","2020-08-01","2020-08-02","2020-08-03","2020-08-04","2020-08-05","2020-08-06","2020-08-07","2020-08-08","2020-08-09","2020-08-10","2020-08-11","2020-08-12","2020-08-13","2020-08-14","2020-08-15","2020-08-16","2020-08-17","2020-08-18","2020-08-19","2020-08-20","2020-08-21","2020-08-22","2020-08-23","2020-08-24","2020-08-25","2020-08-26","2020-08-27","2020-08-28","2020-08-29","2020-08-30","2020-08-31","2020-09-01","2020-09-02","2020-09-03","2020-09-04","2020-09-05","2020-09-06","2020-09-07","2020-09-08","2020-09-09","2020-09-10","2020-09-11","2020-09-12","2020-09-13","2020-09-14","2020-09-15","2020-09-16","2020-09-17","2020-09-18","2020-09-19","2020-09-20","2020-09-21","2020-09-22","2020-09-23","2020-09-24","2020-09-25","2020-09-26","2020-09-27","2020-09-28","2020-09-29","2020-09-30","2020-10-01","2020-10-02","2020-10-03","2020-10-04","2020-10-05","2020-10-06","2020-10-07","2020-10-08","2020-10-09","2020-10-10","2020-10-11","2020-10-12","2020-10-13","2020-10-14","2020-10-15","2020-10-16","2020-10-17","2020-10-18","2020-10-19","2020-10-20","2020-10-21","2020-10-22","2020-10-23","2020-04-01","2020-04-02","2020-04-03","2020-04-04","2020-04-05","2020-04-06","2020-04-07","2020-04-08","2020-04-09","2020-04-10","2020-04-11","2020-04-12","2020-04-13","2020-04-14","2020-04-15","2020-04-16","2020-04-17","2020-04-18","2020-04-19","2020-04-20","2020-04-21","2020-04-22","2020-04-23","2020-04-24","2020-04-25","2020-04-26","2020-04-27","2020-04-28","2020-04-29","2020-04-30","2020-05-01","2020-05-02","2020-05-03","2020-05-04","2020-05-05","2020-05-06","2020-05-07","2020-05-08","2020-05-09","2020-05-10","2020-05-11","2020-05-12","2020-05-13","2020-05-14","2020-05-15","2020-05-16","2020-05-17","2020-05-18","2020-05-19","2020-05-20","2020-05-21","2020-05-22","2020-05-23","2020-05-24","2020-05-25","2020-05-26","2020-05-27","2020-05-28","2020-05-29","2020-05-30","2020-05-31","2020-06-01","2020-06-02","2020-06-03","2020-06-04","2020-06-05","2020-06-06","2020-06-07","2020-06-08","2020-06-09","2020-06-10","2020-06-11","2020-06-12","2020-06-13","2020-06-14","2020-06-15","2020-06-16","2020-06-17","2020-06-18","2020-06-19","2020-06-20","2020-06-21","2020-06-22","2020-06-23","2020-06-24","2020-06-25","2020-06-26","2020-06-27","2020-06-28","2020-06-29","2020-06-30","2020-07-01","2020-07-02","2020-07-03","2020-07-04","2020-07-05","2020-07-06","2020-07-07","2020-07-08","2020-07-09","2020-07-10","2020-07-11","2020-07-12","2020-07-13","2020-07-14","2020-07-15","2020-07-16","2020-07-17","2020-07-18","2020-07-19","2020-07-20","2020-07-21","2020-07-22","2020-07-23","2020-07-24","2020-07-25","2020-07-26","2020-07-27","2020-07-28","2020-07-29","2020-07-30","2020-07-31","2020-08-01","2020-08-02","2020-08-03","2020-08-04","2020-08-05","2020-08-06","2020-08-07","2020-08-08","2020-08-09","2020-08-10","2020-08-11","2020-08-12","2020-08-13","2020-08-14","2020-08-15","2020-08-16","2020-08-17","2020-08-18","2020-08-19","2020-08-20","2020-08-21","2020-08-22","2020-08-23","2020-08-24","2020-08-25","2020-08-26","2020-08-27","2020-08-28","2020-08-29","2020-08-30","2020-08-31","2020-09-01","2020-09-02","2020-09-03","2020-09-04","2020-09-05","2020-09-06","2020-09-07","2020-09-08","2020-09-09","2020-09-10","2020-09-11","2020-09-12","2020-09-13","2020-09-14","2020-09-15","2020-09-16","2020-09-17","2020-09-18","2020-09-19","2020-09-20","2020-09-21","2020-09-22","2020-09-23","2020-09-24","2020-09-25","2020-09-26","2020-09-27","2020-09-28","2020-09-29","2020-09-30","2020-10-01","2020-10-02","2020-10-03","2020-10-04","2020-10-05","2020-10-06","2020-10-07","2020-10-08","2020-10-09","2020-10-10","2020-10-11","2020-10-12","2020-10-13","2020-10-14","2020-10-15","2020-10-16","2020-10-17","2020-10-18","2020-10-19","2020-10-20","2020-10-21","2020-10-22","2020-10-23","2020-04-01","2020-04-02","2020-04-03","2020-04-04","2020-04-05","2020-04-06","2020-04-07","2020-04-08","2020-04-09","2020-04-10","2020-04-11","2020-04-12","2020-04-13","2020-04-14","2020-04-15","2020-04-16","2020-04-17","2020-04-18","2020-04-19","2020-04-20","2020-04-21","2020-04-22","2020-04-23","2020-04-24","2020-04-25","2020-04-26","2020-04-27","2020-04-28","2020-04-29","2020-04-30","2020-05-01","2020-05-02","2020-05-03","2020-05-04","2020-05-05","2020-05-06","2020-05-07","2020-05-08","2020-05-09","2020-05-10","2020-05-11","2020-05-12","2020-05-13","2020-05-14","2020-05-15","2020-05-16","2020-05-17","2020-05-18","2020-05-19","2020-05-20","2020-05-21","2020-05-22","2020-05-23","2020-05-24","2020-05-25","2020-05-26","2020-05-27","2020-05-28","2020-05-29","2020-05-30","2020-05-31","2020-06-01","2020-06-02","2020-06-03","2020-06-04","2020-06-05","2020-06-06","2020-06-07","2020-06-08","2020-06-09","2020-06-10","2020-06-11","2020-06-12","2020-06-13","2020-06-14","2020-06-15","2020-06-16","2020-06-17","2020-06-18","2020-06-19","2020-06-20","2020-06-21","2020-06-22","2020-06-23","2020-06-24","2020-06-25","2020-06-26","2020-06-27","2020-06-28","2020-06-29","2020-06-30","2020-07-01","2020-07-02","2020-07-03","2020-07-04","2020-07-05","2020-07-06","2020-07-07","2020-07-08","2020-07-09","2020-07-10","2020-07-11","2020-07-12","2020-07-13","2020-07-14","2020-07-15","2020-07-16","2020-07-17","2020-07-18","2020-07-19","2020-07-20","2020-07-21","2020-07-22","2020-07-23","2020-07-24","2020-07-25","2020-07-26","2020-07-27","2020-07-28","2020-07-29","2020-07-30","2020-07-31","2020-08-01","2020-08-02","2020-08-03","2020-08-04","2020-08-05","2020-08-06","2020-08-07","2020-08-08","2020-08-09","2020-08-10","2020-08-11","2020-08-12","2020-08-13","2020-08-14","2020-08-15","2020-08-16","2020-08-17","2020-08-18","2020-08-19","2020-08-20","2020-08-21","2020-08-22","2020-08-23","2020-08-24","2020-08-25","2020-08-26","2020-08-27","2020-08-28","2020-08-29","2020-08-30","2020-08-31","2020-09-01","2020-09-02","2020-09-03","2020-09-04","2020-09-05","2020-09-06","2020-09-07","2020-09-08","2020-09-09","2020-09-10","2020-09-11","2020-09-12","2020-09-13","2020-09-14","2020-09-15","2020-09-16","2020-09-17","2020-09-18","2020-09-19","2020-09-20","2020-09-21","2020-09-22","2020-09-23","2020-09-24","2020-09-25","2020-09-26","2020-09-27","2020-09-28","2020-09-29","2020-09-30","2020-10-01","2020-10-02","2020-10-03","2020-10-04","2020-10-05","2020-10-06","2020-10-07","2020-10-08","2020-10-09","2020-10-10","2020-10-11","2020-10-12","2020-10-13","2020-10-14","2020-10-15","2020-10-16","2020-10-17","2020-10-18","2020-10-19","2020-10-20","2020-10-21","2020-10-22","2020-10-23"],"value":["-21","-24","-19","-17","-27","-19","-18","-14","1","-32","-14","-26","-26","-30","-23","-25","-19","-19","-27","-18","-44","-15","-41","-20","-22","-29","-24","-27","-23","-14","-34","-20","-30","-14","-17","-13","-16","-3","1","-13","-21","-24","-22","-25","-21","-15","-22","-18","-22","-16","-18","-13","-14","-30","-16","-19","-14","-15","-3","-6","-15","-10","-12","-9","-9","3","0","-13","-6","-10","-1","-22","6","-10","-20","-11","-12","-8","-11","-3","-5","-13","-11","-14","-10","-10","-4","-7","-13","-9","-4","0","2","7","8","-1","2","2","3","0","7","4","-6","-4","-14","-4","-2","4","3","-7","-1","-7","-2","-3","4","3","-4","-2","-6","-3","-12","10","10","2","6","2","8","10","19","22","8","3","-2","2","1","9","6","-2","3","-2","2","-1","-1","-3","-2","2","0","3","3","10","7","2","6","5","10","9","16","14","9","-20","6","10","9","13","9","3","5","1","5","3","9","7","-7","1","-25","9","6","14","8","2","4","3","12","12","15","14","6","13","9","16","12","16","18","16","-11","6","10","11","14","16","14","-42","20","15","12","17","-68","-69","-68","-70","-74","-66","-66","-66","-62","-79","-69","-74","-66","-68","-67","-68","-65","-68","-73","-62","-77","-63","-78","-65","-69","-74","-65","-67","-66","-64","-78","-70","-77","-63","-64","-64","-68","-61","-64","-71","-64","-67","-66","-69","-68","-68","-73","-64","-65","-64","-65","-62","-66","-77","-62","-64","-63","-64","-59","-63","-69","-58","-60","-59","-60","-54","-57","-67","-53","-55","-51","-64","-44","-54","-65","-52","-52","-50","-52","-48","-51","-58","-49","-51","-50","-51","-48","-54","-61","-48","-46","-46","-44","-39","-42","-48","-37","-38","-38","-42","-35","-38","-47","-38","-46","-43","-40","-33","-36","-43","-35","-38","-37","-38","-33","-35","-43","-35","-38","-40","-48","-32","-31","-38","-30","-32","-29","-30","-21","-21","-40","-29","-32","-31","-33","-25","-29","-41","-31","-34","-33","-38","-39","-43","-42","-33","-34","-33","-34","-25","-27","-34","-31","-32","-30","-30","-22","-24","-30","-47","-31","-29","-29","-23","-24","-33","-29","-34","-30","-31","-25","-27","-45","-34","-55","-36","-34","-27","-30","-37","-36","-37","-32","-33","-25","-27","-40","-29","-31","-28","-31","-25","-23","-26","-34","-32","-31","-31","-28","-24","-31","-51","-28","-29","-30","-23","-61","-62","-71","-78","-81","-71","-75","-78","-74","-79","-83","-85","-72","-72","-74","-77","-73","-80","-81","-72","-72","-72","-75","-69","-77","-78","-72","-74","-72","-70","-70","-79","-87","-71","-70","-71","-78","-67","-75","-81","-70","-71","-72","-75","-75","-78","-79","-70","-70","-69","-68","-62","-74","-88","-69","-68","-69","-69","-60","-70","-71","-64","-64","-65","-66","-57","-66","-73","-60","-60","-57","-55","-45","-58","-80","-70","-63","-60","-57","-49","-55","-53","-53","-54","-54","-54","-48","-67","-70","-63","-55","-59","-55","-52","-63","-52","-48","-48","-48","-54","-45","-49","-48","-46","-65","-66","-58","-40","-49","-41","-44","-43","-43","-39","-26","-34","-40","-40","-35","-57","-66","-47","-48","-36","-40","-38","-37","-33","-19","-29","-43","-35","-30","-33","-28","-15","-26","-55","-43","-39","-38","-54","-54","-73","-57","-46","-43","-44","-35","-17","-23","-11","-40","-41","-39","-27","-8","-25","-2","24","-34","-36","-25","-11","-17","-9","-18","-45","-31","-23","-10","-29","-65","-47","-69","-51","-37","-17","-29","-16","-28","-42","-31","-25","4","-31","-60","-33","-29","-37","-43","-33","-45","-29","17","-35","-38","-39","-34","-35","-28","-18","-30","-33","-30","-5","-64","-64","-61","-57","-60","-59","-60","-61","-58","-75","-58","-59","-60","-62","-62","-63","-60","-57","-61","-59","-76","-60","-75","-60","-58","-63","-60","-62","-62","-59","-75","-59","-64","-58","-59","-59","-62","-56","-50","-56","-59","-60","-61","-63","-63","-56","-60","-59","-60","-59","-59","-57","-53","-63","-57","-58","-57","-58","-53","-48","-54","-53","-54","-53","-53","-48","-43","-51","-48","-50","-47","-66","-46","-44","-53","-50","-49","-48","-49","-46","-41","-47","-47","-48","-48","-48","-44","-43","-49","-47","-45","-45","-44","-41","-36","-41","-40","-40","-41","-43","-38","-32","-40","-40","-46","-47","-43","-37","-32","-39","-39","-41","-40","-40","-35","-30","-36","-38","-39","-41","-47","-36","-30","-35","-34","-35","-35","-34","-27","-19","-27","-33","-35","-36","-35","-29","-25","-36","-34","-36","-35","-38","-38","-42","-39","-35","-36","-36","-34","-29","-23","-27","-33","-34","-33","-31","-23","-18","-23","-57","-28","-32","-30","-25","-19","-24","-29","-33","-32","-32","-28","-23","-39","-34","-47","-36","-32","-27","-22","-23","-32","-33","-31","-30","-20","-14","-24","-23","-24","-24","-25","-21","-11","-16","-51","-22","-25","-25","-20","-11","-15","-39","-21","-23","-23","-18","-54","-53","-52","-41","-38","-49","-53","-53","-52","-73","-43","-34","-49","-53","-52","-52","-51","-39","-36","-49","-72","-51","-70","-50","-38","-36","-48","-52","-51","-49","-71","-40","-38","-47","-50","-50","-52","-47","-34","-22","-47","-50","-49","-50","-50","-33","-29","-45","-48","-47","-47","-44","-29","-32","-44","-46","-45","-44","-41","-23","-19","-39","-42","-41","-41","-38","-20","-18","-36","-39","-38","-61","-39","-18","-18","-37","-39","-37","-37","-34","-15","-11","-35","-38","-36","-35","-33","-17","-13","-33","-35","-34","-33","-31","-12","-7","-30","-33","-32","-31","-29","-9","-7","-29","-35","-33","-31","-27","-9","-6","-26","-29","-29","-28","-25","-8","-6","-27","-30","-31","-33","-27","-8","-6","-26","-29","-27","-26","-23","-5","4","-26","-28","-27","-26","-24","-8","-9","-25","-26","-25","-26","-27","-15","-8","-23","-26","-24","-23","-20","-4","-4","-22","-25","-24","-22","-21","-6","-5","-64","-25","-23","-22","-20","-4","-4","-20","-24","-22","-21","-19","-4","-10","-23","-33","-23","-20","-18","-2","-2","-20","-22","-21","-18","-17","-2","-6","-18","-21","-19","-19","-17","0","3","-60","-20","-19","-19","-17","1","1","-38","-19","-17","-16","-14","22","23","23","18","17","20","21","21","21","28","19","16","20","22","21","23","23","18","17","19","27","20","27","22","18","17","20","22","21","21","28","19","18","19","21","21","23","21","17","14","19","22","21","23","24","18","17","19","21","21","22","21","16","17","19","20","20","21","19","14","13","16","19","19","20","19","14","14","16","18","16","24","17","13","13","17","18","17","18","17","12","12","15","18","17","18","17","13","13","16","16","16","16","15","11","9","12","14","13","15","13","9","8","12","16","16","16","14","10","9","12","15","14","15","13","9","8","12","14","14","17","14","9","8","11","13","12","13","11","6","4","10","13","12","13","11","7","8","11","13","12","14","14","13","10","11","13","12","12","10","6","5","10","12","11","11","9","5","4","13","9","10","11","10","6","5","9","13","11","12","10","7","9","11","18","13","12","10","7","5","10","12","10","10","8","6","8","9","10","9","11","9","6","6","12","9","10","11","11","7","6","14","9","10","11","9"],"zvalues":{"__ndarray__":"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AAAAAAAAT8AAAAAAAEBTwAAAAAAAgE/AAAAAAACAU8AAAAAAAEBQwAAAAAAAQFHAAAAAAACAUsAAAAAAAEBQwAAAAAAAwFDAAAAAAACAUMAAAAAAAABQwAAAAAAAgFPAAAAAAACAUcAAAAAAAEBTwAAAAAAAgE/AAAAAAAAAUMAAAAAAAABQwAAAAAAAAFHAAAAAAACATsAAAAAAAABQwAAAAAAAwFHAAAAAAAAAUMAAAAAAAMBQwAAAAAAAgFDAAAAAAABAUcAAAAAAAABRwAAAAAAAAFHAAAAAAABAUsAAAAAAAABQwAAAAAAAQFDAAAAAAAAAUMAAAAAAAEBQwAAAAAAAAE/AAAAAAACAUMAAAAAAAEBTwAAAAAAAAE/AAAAAAAAAUMAAAAAAAIBPwAAAAAAAAFDAAAAAAACATcAAAAAAAIBPwAAAAAAAQFHAAAAAAAAATcAAAAAAAABOwAAAAAAAgE3AAAAAAAAATsAAAAAAAABLwAAAAAAAgEzAAAAAAADAUMAAAAAAAIBKwAAAAAAAgEvAAAAAAACAScAAAAAAAABQwAAAAAAAAEbAAAAAAAAAS8AAAAAAAEBQwAAAAAAAAErAAAAAAAAASsAAAAAAAABJwAAAAAAAAErAAAAAAAAASMAAAAAAAIBJwAAAAAAAAE3AAAAAAACASMAAAAAAAIBJwAAAAAAAAEnAAAAAAACAScAAAAAAAABIwAAAAAAAAEvAAAAAAACATsAAAAAAAABIwAAAAAAAAEfAAAAAAAAAR8AAAAAAAABGwAAAAAAAgEPAAAAAAAAARcAAAAAAAABIwAAAAAAAgELAAAAAAAAAQ8AAAAAAAABDwAAAAAAAAEXAAAAAAACAQcAAAAAAAABDwAAAAAAAgEfAAAAAAAAAQ8AAAAAAAABHwAAAAAAAgEXAAAAAAAAARMAAAAAAAIBAwAAAAAAAAELAAAAAAACARcAAAAAAAIBBwAAAAAAAAEPAAAAAAACAQsAAAAAAAABDwAAAAAAAgEDAAAAAAACAQcAAAAAAAIBFwAAAAAAAgEHAAAAAAAAAQ8AAAAAAAABEwAAAAAAAAEjAAAAAAAAAQMAAAAAAAAA/wAAAAAAAAEPAAAAAAAAAPsAAAAAAAABAwAAAAAAAAD3AAAAAAAAAPsAAAAAAAAA1wAAAAAAAADXAAAAAAAAARMAAAAAAAAA9wAAAAAAAAEDAAAAAAAAAP8AAAAAAAIBAwAAAAAAAADnAAAAAAAAAPcAAAAAAAIBEwAAAAAAAAD/AAAAAAAAAQcAAAAAAAIBAwAAAAAAAAEPAAAAAAACAQ8AAAAAAAIBFwAAAAAAAAEXAAAAAAACAQMAAAAAAAABBwAAAAAAAgEDAAAAAAAAAQcAAAAAAAAA5wAAAAAAAADvAAAAAAAAAQcAAAAAAAAA/wAAAAAAAAEDAAAAAAAAAPsAAAAAAAAA+wAAAAAAAADbAAAAAAAAAOMAAAAAAAAA+wAAAAAAAgEfAAAAAAAAAP8AAAAAAAAA9wAAAAAAAAD3AAAAAAAAAN8AAAAAAAAA4wAAAAAAAgEDAAAAAAAAAPcAAAAAAAABBwAAAAAAAAD7AAAAAAAAAP8AAAAAAAAA5wAAAAAAAADvAAAAAAACARsAAAAAAAABBwAAAAAAAgEvAAAAAAAAAQsAAAAAAAABBwAAAAAAAADvAAAAAAAAAPsAAAAAAAIBCwAAAAAAAAELAAAAAAACAQsAAAAAAAABAwAAAAAAAgEDAAAAAAAAAOcAAAAAAAAA7wAAAAAAAAETAAAAAAAAAPcAAAAAAAAA/wAAAAAAAADzAAAAAAAAAP8AAAAAAAAA5wAAAAAAAADfAAAAAAAAAOsAAAAAAAABBwAAAAAAAAEDAAAAAAAAAP8AAAAAAAAA/wAAAAAAAADzAAAAAAAAAOMAAAAAAAAA/wAAAAAAAgEnAAAAAAAAAPMAAAAAAAAA9wAAAAAAAAD7AAAAAAAAAN8AAAAAAAIBOwAAAAAAAAE/AAAAAAADAUcAAAAAAAIBTwAAAAAAAQFTAAAAAAADAUcAAAAAAAMBSwAAAAAAAgFPAAAAAAACAUsAAAAAAAMBTwAAAAAAAwFTAAAAAAABAVcAAAAAAAABSwAAAAAAAAFLAAAAAAACAUsAAAAAAAEBTwAAAAAAAQFLAAAAAAAAAVMAAAAAAAEBUwAAAAAAAAFLAAAAAAAAAUsAAAAAAAABSwAAAAAAAwFLAAAAAAABAUcAAAAAAAEBTwAAAAAAAgFPAAAAAAAAAUsAAAAAAAIBSwAAAAAAAAFLAAAAAAACAUcAAAAAAAIBRwAAAAAAAwFPAAAAAAADAVcAAAAAAAMBRwAAAAAAAgFHAAAAAAADAUcAAAAAAAIBTwAAAAAAAwFDAAAAAAADAUsAAAAAAAEBUwAAAAAAAgFHAAAAAAADAUcAAAAAAAABSwAAAAAAAwFLAAAAAAADAUsAAAAAAAIBTwAAAAAAAwFPAAAAAAACAUcAAAAAAAIBRwAAAAAAAQFHAAAAAAAAAUcAAAAAAAABPwAAAAAAAgFLAAAAAAAAAVsAAAAAAAEBRwAAAAAAAAFHAAAAAAABAUcAAAAAAAEBRwAAAAAAAAE7AAAAAAACAUcAAAAAAAMBRwAAAAAAAAFDAAAAAAAAAUMAAAAAAAEBQwAAAAAAAgFDAAAAAAACATMAAAAAAAIBQwAAAAAAAQFLAAAAAAAAATsAAAAAAAABOwAAAAAAAgEzAAAAAAACAS8AAAAAAAIBGwAAAAAAAAE3AAAAAAAAAVMAAAAAAAIBRwAAAAAAAgE/AAAAAAAAATsAAAAAAAIBMwAAAAAAAgEjAAAAAAACAS8AAAAAAAIBKwAAAAAAAgErAAAAAAAAAS8AAAAAAAABLwAAAAAAAAEvAAAAAAAAASMAAAAAAAMBQwAAAAAAAgFHAAAAAAACAT8AAAAAAAIBLwAAAAAAAgE3AAAAAAACAS8AAAAAAAABKwAAAAAAAgE/AAAAAAAAASsAAAAAAAABIwAAAAAAAAEjAAAAAAAAASMAAAAAAAABLwAAAAAAAgEbAAAAAAACASMAAAAAAAABIwAAAAAAAAEfAAAAAAABAUMAAAAAAAIBQwAAAAAAAAE3AAAAAAAAARMAAAAAAAIBIwAAAAAAAgETAAAAAAAAARsAAAAAAAIBFwAAAAAAAgEXAAAAAAACAQ8AAAAAAAAA6wAAAAAAAAEHAAAAAAAAARMAAAAAAAABEwAAAAAAAgEHAAAAAAACATMAAAAAAAIBQwAAAAAAAgEfAAAAAAAAASMAAAAAAAABCwAAAAAAAAETAAAAAAAAAQ8AAAAAAAIBCwAAAAAAAgEDAAAAAAAAAM8AAAAAAAAA9wAAAAAAAgEXAAAAAAACAQcAAAAAAAAA+wAAAAAAAgEDAAAAAAAAAPMAAAAAAAAAuwAAAAAAAADrAAAAAAACAS8AAAAAAAIBFwAAAAAAAgEPAAAAAAAAAQ8AAAAAAAABLwAAAAAAAAEvAAAAAAABAUsAAAAAAAIBMwAAAAAAAAEfAAAAAAACARcAAAAAAAABGwAAAAAAAgEHAAAAAAAAAMcAAAAAAAAA3wAAAAAAAACbAAAAAAAAARMAAAAAAAIBEwAAAAAAAgEPAAAAAAAAAO8AAAAAAAAAgwAAAAAAAADnAAAAAAAAAAMAAAAAAAAA4QAAAAAAAAEHAAAAAAAAAQsAAAAAAAAA5wAAAAAAAACbAAAAAAAAAMcAAAAAAAAAiwAAAAAAAADLAAAAAAACARsAAAAAAAAA/wAAAAAAAADfAAAAAAAAAJMAAAAAAAAA9wAAAAAAAQFDAAAAAAACAR8AAAAAAAEBRwAAAAAAAgEnAAAAAAACAQsAAAAAAAAAxwAAAAAAAAD3AAAAAAAAAMMAAAAAAAAA8wAAAAAAAAEXAAAAAAAAAP8AAAAAAAAA5wAAAAAAAABBAAAAAAAAAP8AAAAAAAABOwAAAAAAAgEDAAAAAAAAAPcAAAAAAAIBCwAAAAAAAgEXAAAAAAACAQMAAAAAAAIBGwAAAAAAAAD3AAAAAAAAAMUAAAAAAAIBBwAAAAAAAAEPAAAAAAACAQ8AAAAAAAABBwAAAAAAAgEHAAAAAAAAAPMAAAAAAAAAywAAAAAAAAD7AAAAAAACAQMAAAAAAAAA+wAAAAAAAABTAAAAAAAAAUMAAAAAAAABQwAAAAAAAgE7AAAAAAACATMAAAAAAAABOwAAAAAAAgE3AAAAAAAAATsAAAAAAAIBOwAAAAAAAAE3AAAAAAADAUsAAAAAAAABNwAAAAAAAgE3AAAAAAAAATsAAAAAAAABPwAAAAAAAAE/AAAAAAACAT8AAAAAAAABOwAAAAAAAgEzAAAAAAACATsAAAAAAAIBNwAAAAAAAAFPAAAAAAAAATsAAAAAAAMBSwAAAAAAAAE7AAAAAAAAATcAAAAAAAIBPwAAAAAAAAE7AAAAAAAAAT8AAAAAAAABPwAAAAAAAgE3AAAAAAADAUsAAAAAAAIBNwAAAAAAAAFDAAAAAAAAATcAAAAAAAIBNwAAAAAAAgE3AAAAAAAAAT8AAAAAAAABMwAAAAAAAAEnAAAAAAAAATMAAAAAAAIBNwAAAAAAAAE7AAAAAAACATsAAAAAAAIBPwAAAAAAAgE/AAAAAAAAATMAAAAAAAABOwAAAAAAAgE3AAAAAAAAATsAAAAAAAIBNwAAAAAAAgE3AAAAAAACATMAAAAAAAIBKwAAAAAAAgE/AAAAAAACATMAAAAAAAABNwAAAAAAAgEzAAAAAAAAATcAAAAAAAIBKwAAAAAAAAEjAAAAAAAAAS8AAAAAAAIBKwAAAAAAAAEvAAAAAAACASsAAAAAAAIBKwAAAAAAAAEjAAAAAAACARcAAAAAAAIBJwAAAAAAAAEjAAAAAAAAAScAAAAAAAIBHwAAAAAAAgFDAAAAAAAAAR8AAAAAAAABGwAAAAAAAgErAAAAAAAAAScAAAAAAAIBIwAAAAAAAAEjAAAAAAACASMAAAAAAAABHwAAAAAAAgETAAAAAAACAR8AAAAAAAIBHwAAAAAAAAEjAAAAAAAAASMAAAAAAAABIwAAAAAAAAEbAAAAAAACARcAAAAAAAIBIwAAAAAAAgEfAAAAAAACARsAAAAAAAIBGwAAAAAAAAEbAAAAAAACARMAAAAAAAABCwAAAAAAAgETAAAAAAAAARMAAAAAAAABEwAAAAAAAgETAAAAAAACARcAAAAAAAABDwAAAAAAAAEDAAAAAAAAARMAAAAAAAABEwAAAAAAAAEfAAAAAAACAR8AAAAAAAIBFwAAAAAAAgELAAAAAAAAAQMAAAAAAAIBDwAAAAAAAgEPAAAAAAACARMAAAAAAAABEwAAAAAAAAETAAAAAAACAQcAAAAAAAAA+wAAAAAAAAELAAAAAAAAAQ8AAAAAAAIBDwAAAAAAAgETAAAAAAACAR8AAAAAAAABCwAAAAAAAAD7AAAAAAACAQcAAAAAAAABBwAAAAAAAgEHAAAAAAACAQcAAAAAAAABBwAAAAAAAADvAAAAAAAAAM8AAAAAAAAA7wAAAAAAAgEDAAAAAAACAQcAAAAAAAABCwAAAAAAAgEHAAAAAAAAAPcAAAAAAAAA5wAAAAAAAAELAAAAAAAAAQcAAAAAAAABCwAAAAAAAgEHAAAAAAAAAQ8AAAAAAAABDwAAAAAAAAEXAAAAAAACAQ8AAAAAAAIBBwAAAAAAAAELAAAAAAAAAQsAAAAAAAABBwAAAAAAAAD3AAAAAAAAAN8AAAAAAAAA7wAAAAAAAgEDAAAAAAAAAQcAAAAAAAIBAwAAAAAAAAD/AAAAAAAAAN8AAAAAAAAAywAAAAAAAADfAAAAAAACATMAAAAAAAAA8wAAAAAAAAEDAAAAAAAAAPsAAAAAAAAA5wAAAAAAAADPAAAAAAAAAOMAAAAAAAAA9wAAAAAAAgEDAAAAAAAAAQMAAAAAA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AAA1wAAAAAAAADPAAAAAAAAAM8AAAAAAAAAxwAAAAAAAAAAAAAAAAAAACEAAAAAAAABOwAAAAAAAADTAAAAAAAAAM8AAAAAAAAAzwAAAAAAAADHAAAAAAAAA8D8AAAAAAADwPwAAAAAAAEPAAAAAAAAAM8AAAAAAAAAxwAAAAAAAADDAAAAAAAAALMAAAAAAAAA2QAAAAAAAADdAAAAAAAAAN0AAAAAAAAAyQAAAAAAAADFAAAAAAAAANEAAAAAAAAA1QAAAAAAAADVAAAAAAAAANUAAAAAAAAA8QAAAAAAAADNAAAAAAAAAMEAAAAAAAAA0QAAAAAAAADZAAAAAAAAANUAAAAAAAAA3QAAAAAAAADdAAAAAAAAAMkAAAAAAAAAxQAAAAAAAADNAAAAAAAAAO0AAAAAAAAA0QAAAAAAAADtAAAAAAAAANkAAAAAAAAAyQAAAAAAAADFAAAAAAAAANEAAAAAAAAA2QAAAAAAAADVAAAAAAAAANUAAAAAAAAA8QAAAAAAAADNAAAAAAAAAMkAAAAAAAAAzQAAAAAAAADVAAAAAAAAANUAAAAAAAAA3QAAAAAAAADVAAAAAAAAAMUAAAAAAAAAsQAAAAAAAADNAAAAAAAAANkAAAAAAAAA1QAAAAAAAADdAAAAAAAAAOEAAAAAAAAAyQAAAAAAAADFAAAAAAAAAM0AAAAAAAAA1QAAAAAAAADVAAAAAAAAANkAAAAAAAAA1QAAAAAAAADBAAAAAAAAAMUAAAAAAAAAzQAAAAAAAADRAAAAAAAAANEAAAAAAAAA1QAAAAAAAADNAAAAAAAAALEAAAAAAAAAqQAAAAAAAADBAAAAAAAAAM0AAAAAAAAAzQAAAAAAAADRAAAAAAAAAM0AAAAAAAAAsQAAAAAAAACxAAAAAAAAAMEAAAAAAAAAyQAAAAAAAADBAAAAAAAAAOEAAAAAAAAAxQAAAAAAAACpAAAAAAAAAKkAAAAAAAAAxQAAAAAAAADJAAAAAAAAAMUAAAAAAAAAyQAAAAAAAADFAAAAAAAAAKEAAAAAAAAAoQAAAAAAAAC5AAAAAAAAAMkAAAAAAAAAxQAAAAAAAADJAAAAAAAAAMUAAAAAAAAAqQAAAAAAAACpAAAAAAAAAMEAAAAAAAAAwQAAAAAAAADBAAAAAAAAAMEAAAAAAAAAuQAAAAAAAACZAAAAAAAAAIkAAAAAAAAAoQAAAAAAAACxAAAAAAAAAKkAAAAAAAAAuQAAAAAAAACpAAAAAAAAAIkAAAAAAAAAgQAAAAAAAAChAAAAAAAAAMEAAAAAAAAAwQAAAAAAAADBAAAAAAAAALEAAAAAAAAAkQAAAAAAAACJAAAAAAAAAKEAAAAAAAAAuQAAAAAAAACxAAAAAAAAALkAAAAAAAAAqQAAAAAAAACJAAAAAAAAAIEAAAAAAAAAoQAAAAAAAACxAAAAAAAAALEAAAAAAAAAxQAAAAAAAACxAAAAAAAAAIkAAAAAAAAAgQAAAAAAAACZAAAAAAAAAKkAAAAAAAAAoQAAAAAAAACpAAAAAAAAAJkAAAAAAAAAYQAAAAAAAABBAAAAAAAAAJEAAAAAAAAAqQAAAAAAAAChAAAAAAAAAKkAAAAAAAAAmQAAAAAAAABxAAAAAAAAAIEAAAAAAAAAmQAAAAAAAACpAAAAAAAAAKEAAAAAAAAAsQAAAAAAAACxAAAAAAAAAKkAAAAAAAAAkQAAAAAAAACZAAAAAAAAAKkAAAAAAAAAoQAAAAAAAAChAAAAAAAAAJEAAAAAAAAAYQAAAAAAAABRAAAAAAAAAJEAAAAAAAAAoQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAiQAAAAAAAABRAAAAAAAAAEEAAAAAAAAAqQAAAAAAAACJAAAAAAAAAJEAAAAAAAAAmQAAAAAAAACRAAAAAAAAAGEAAAAAAAAAUQAAAAAAAACJAAAAAAAAAKkAAAAAAAAAmQAAAAAAAAChAAAAAAAAAJEAAAAAAAAAcQAAAAAAAACJAAAAAAAAAJkAAAAAAAAAyQAAAAAAAACpAAAAAAAAAKEAAAAAAAAAkQAAAAAAAABxAAAAAAAAAFEAAAAAAAAAkQAAAAAAAAChAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACBAAAAAAAAAGEAAAAAAAAAgQAAAAAAAACJAAAAAAAAAJEAAAAAAAAAiQAAAAAAAACZAAAAAAAAAIkAAAAAAAAAYQAAAAAAAABhAAAAAAAAAKEAAAAAAAAAiQAAAAAAAACRAAAAAAAAAJkAAAAAAAAAmQAAAAAAAABxAAAAAAAAAGEAAAAAAAAAsQAAAAAAAACJAAAAAAAAAJEAAAAAAAAAmQAAAAAAAACJA","dtype":"float64","shape":[1236]}},"selected":{"id":"1142","type":"Selection"},"selection_policy":{"id":"1163","type":"UnionRenderers"}},"id":"1141","type":"ColumnDataSource"},{"attributes":{},"id":"1121","type":"CategoricalTicker"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"1161","type":"BoxAnnotation"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"1110","type":"HoverTool"},{"id":"1128","type":"SaveTool"},{"id":"1129","type":"PanTool"},{"id":"1130","type":"WheelZoomTool"},{"id":"1131","type":"BoxZoomTool"},{"id":"1132","type":"ResetTool"}]},"id":"1133","type":"Toolbar"},{"attributes":{"axis_label":"Data","axis_label_text_font_size":{"value":"10pt"},"bounds":"auto","formatter":{"id":"1154","type":"CategoricalTickFormatter"},"major_label_orientation":"horizontal","ticker":{"id":"1125","type":"CategoricalTicker"}},"id":"1124","type":"CategoricalAxis"},{"attributes":{},"id":"1125","type":"CategoricalTicker"},{"attributes":{},"id":"1156","type":"BasicTickFormatter"},{"attributes":{"callback":null,"factors":["Mercados/Farm\u00e1cias","Varejo/Recrea\u00e7\u00e3o","Parques/Praias","Esta\u00e7\u00f5es de Metr\u00f4/Trem","Trabalho","Resid\u00eancia"],"tags":[[["columns","columns",null]]]},"id":"1108","type":"FactorRange"},{"attributes":{},"id":"1142","type":"Selection"},{"attributes":{"callback":null,"renderers":[{"id":"1146","type":"GlyphRenderer"}],"tags":["hv_created"],"tooltips":[["columns","@{columns}"],["index","@{index}"],["value","@{value}"]]},"id":"1110","type":"HoverTool"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer01689","sizing_mode":"stretch_width"},"id":"1107","type":"Spacer"}],"root_ids":["1106"]},"title":"Bokeh Application","version":"1.4.0"}}
+        </script>
+        <script type="text/javascript">
+          (function() {
+            var fn = function() {
+              Bokeh.safely(function() {
+                (function(root) {
+                  function embed_document(root) {
+                    
+                  var docs_json = document.getElementById('1292').textContent;
+                  var render_items = [{"docid":"8ffa84cd-7285-4afd-a26e-421720c182ba","roots":{"1106":"3c345ff1-3063-4421-a418-98b2432dd5d6"}}];
+                  root.Bokeh.embed.embed_items(docs_json, render_items);
+                
+                  }
+                  if (root.Bokeh !== undefined) {
+                    embed_document(root);
+                  } else {
+                    var attempts = 0;
+                    var timer = setInterval(function(root) {
+                      if (root.Bokeh !== undefined) {
+                        clearInterval(timer);
+                        embed_document(root);
+                      } else {
+                        attempts++;
+                        if (attempts > 100) {
+                          clearInterval(timer);
+                          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                        }
+                      }
+                    }, 10, root)
+                  }
+                })(window);
+              });
+            };
+            if (document.readyState != "loading") fn();
+            else document.addEventListener("DOMContentLoaded", fn);
+          })();
+        </script>
+    
+  </body>
+  
+</html>
